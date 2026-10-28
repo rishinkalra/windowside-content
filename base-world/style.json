@@ -1,61 +1,455 @@
 {
-  "version": 8,
-  "name": "Windowside Night",
-  "glyphs": "{{BASE}}/glyphs/{fontstack}/{range}.pbf",
-  "sources": {
-    "countries": {"type": "geojson", "data": "{{BASE}}/geo/countries.geojson", "tolerance": 0.6},
-    "states": {"type": "geojson", "data": "{{BASE}}/geo/states.geojson", "tolerance": 0.6},
-    "borders": {"type": "geojson", "data": "{{BASE}}/geo/borders.geojson"},
-    "urban": {"type": "geojson", "data": "{{BASE}}/geo/urban.geojson", "tolerance": 0.8},
-    "lakes": {"type": "geojson", "data": "{{BASE}}/geo/lakes.geojson"},
-    "rivers": {"type": "geojson", "data": "{{BASE}}/geo/rivers.geojson"},
-    "marine": {"type": "geojson", "data": "{{BASE}}/geo/marine.geojson"},
-    "regions": {"type": "geojson", "data": "{{BASE}}/geo/regions.geojson"},
-    "places": {"type": "geojson", "data": "{{BASE}}/geo/places.geojson"}
+ "version": 8,
+ "name": "Windowside Night",
+ "glyphs": "{{BASE}}/glyphs/{fontstack}/{range}.pbf",
+ "sources": {
+  "countries": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/countries.geojson",
+   "tolerance": 0.6
   },
-  "layers": [
-    {"id": "ocean", "type": "background", "paint": {"background-color": "#0A1424"}},
-    {"id": "land", "type": "fill", "source": "countries", "paint": {"fill-color": "#141E2C", "fill-antialias": true}},
-    {"id": "regions-fill", "type": "fill", "source": "regions",
-     "filter": ["in", ["get", "featurecla"], ["literal", ["Desert", "Range/mtn", "Plateau"]]],
-     "paint": {"fill-color": ["match", ["get", "featurecla"], "Desert", "#2A2618", "Range/mtn", "#1B2733", "#18222F"], "fill-opacity": 0.55}},
-    {"id": "urban", "type": "fill", "source": "urban", "minzoom": 4,
-     "paint": {"fill-color": "#5A4520", "fill-opacity": ["interpolate", ["linear"], ["zoom"], 4, 0.35, 8, 0.7]}},
-    {"id": "lakes", "type": "fill", "source": "lakes", "paint": {"fill-color": "#11304F"}},
-    {"id": "rivers", "type": "line", "source": "rivers",
-     "filter": ["<=", ["get", "scalerank"], ["step", ["zoom"], 4, 4, 7, 6, 12]],
-     "paint": {"line-color": "#1E4E78", "line-width": ["interpolate", ["linear"], ["zoom"], 3, 0.6, 8, 1.8]}},
-    {"id": "states-line", "type": "line", "source": "states", "minzoom": 3.5,
-     "paint": {"line-color": "#2C3D55", "line-width": 0.8, "line-dasharray": [3, 2]}},
-    {"id": "country-borders", "type": "line", "source": "borders",
-     "paint": {"line-color": "#5A6F8E", "line-width": ["interpolate", ["linear"], ["zoom"], 2, 0.8, 8, 1.6]}},
-    {"id": "coast", "type": "line", "source": "countries",
-     "paint": {"line-color": "#26405F", "line-width": 0.7}},
-    {"id": "marine-labels", "type": "symbol", "source": "marine",
-     "filter": ["<=", ["get", "scalerank"], ["step", ["zoom"], 1, 3, 3, 5, 6]],
-     "layout": {"text-field": ["get", "name"], "text-font": ["NotoSansItalic"], "text-size": 12,
-                "text-letter-spacing": 0.15, "text-max-width": 8, "symbol-placement": "point"},
-     "paint": {"text-color": "#3F6E99"}},
-    {"id": "region-labels", "type": "symbol", "source": "regions", "minzoom": 3,
-     "filter": ["in", ["get", "featurecla"], ["literal", ["Desert", "Range/mtn", "Plateau", "Plain", "Valley", "Delta", "Wetlands", "Peninsula", "Pen/cape", "Coast"]]],
-     "layout": {"text-field": ["upcase", ["get", "name"]], "text-font": ["NotoSansItalic"], "text-size": 11,
-                "text-letter-spacing": 0.25, "text-max-width": 10},
-     "paint": {"text-color": "#7A6F55", "text-opacity": 0.85}},
-    {"id": "state-labels", "type": "symbol", "source": "states", "minzoom": 5,
-     "layout": {"text-field": ["get", "name"], "text-font": ["NotoSansRegular"], "text-size": 11, "text-letter-spacing": 0.08},
-     "paint": {"text-color": "#4D6585"}},
-    {"id": "place-dots", "type": "circle", "source": "places",
-     "filter": [">=", ["get", "i"], ["step", ["zoom"], 70, 3, 55, 5, 40, 7, 0]],
-     "paint": {"circle-radius": ["match", ["get", "k"], "capital", 3.5, "peak", 3, 2.5],
-               "circle-color": ["match", ["get", "k"], "peak", "#C9B58A", "volcano", "#E07A5F", "lake", "#4C8FC9", "#D7DEE8"],
-               "circle-stroke-color": "#0A1424", "circle-stroke-width": 1}},
-    {"id": "place-labels", "type": "symbol", "source": "places",
-     "filter": [">=", ["get", "i"], ["step", ["zoom"], 70, 3, 55, 5, 40, 7, 0]],
-     "layout": {"text-field": ["get", "n"], "text-font": ["NotoSansMedium"],
-                "text-size": ["interpolate", ["linear"], ["get", "i"], 30, 11, 90, 14],
-                "text-offset": [0, 0.9], "text-anchor": "top", "text-max-width": 9,
-                "symbol-sort-key": ["-", 100, ["get", "i"]]},
-     "paint": {"text-color": ["match", ["get", "k"], "peak", "#D9C79E", "lake", "#7FB4E2", "#D7DEE8"],
-               "text-halo-color": "#0A1424", "text-halo-width": 1.4}}
-  ]
+  "states": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/states.geojson",
+   "tolerance": 0.6
+  },
+  "borders": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/borders.geojson"
+  },
+  "urban": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/urban.geojson",
+   "tolerance": 0.8
+  },
+  "lakes": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/lakes.geojson"
+  },
+  "rivers": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/rivers.geojson"
+  },
+  "marine": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/marine.geojson"
+  },
+  "regions": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/regions.geojson"
+  },
+  "places": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/places.geojson"
+  }
+ },
+ "layers": [
+  {
+   "id": "ocean",
+   "type": "background",
+   "paint": {
+    "background-color": "#0A1424"
+   }
+  },
+  {
+   "id": "land",
+   "type": "fill",
+   "source": "countries",
+   "paint": {
+    "fill-color": "#141E2C",
+    "fill-antialias": true
+   }
+  },
+  {
+   "id": "regions-fill",
+   "type": "fill",
+   "source": "regions",
+   "filter": [
+    "in",
+    [
+     "get",
+     "featurecla"
+    ],
+    [
+     "literal",
+     [
+      "Desert",
+      "Range/mtn",
+      "Plateau"
+     ]
+    ]
+   ],
+   "paint": {
+    "fill-color": [
+     "match",
+     [
+      "get",
+      "featurecla"
+     ],
+     "Desert",
+     "#2A2618",
+     "Range/mtn",
+     "#1B2733",
+     "#18222F"
+    ],
+    "fill-opacity": 0.55
+   }
+  },
+  {
+   "id": "urban",
+   "type": "fill",
+   "source": "urban",
+   "minzoom": 4,
+   "paint": {
+    "fill-color": "#5A4520",
+    "fill-opacity": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     4,
+     0.35,
+     8,
+     0.7
+    ]
+   }
+  },
+  {
+   "id": "lakes",
+   "type": "fill",
+   "source": "lakes",
+   "paint": {
+    "fill-color": "#11304F"
+   }
+  },
+  {
+   "id": "rivers",
+   "type": "line",
+   "source": "rivers",
+   "filter": [
+    "<=",
+    [
+     "get",
+     "scalerank"
+    ],
+    [
+     "step",
+     [
+      "zoom"
+     ],
+     4,
+     4,
+     7,
+     6,
+     12
+    ]
+   ],
+   "paint": {
+    "line-color": "#1E4E78",
+    "line-width": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     3,
+     0.6,
+     8,
+     1.8
+    ]
+   }
+  },
+  {
+   "id": "states-line",
+   "type": "line",
+   "source": "states",
+   "minzoom": 3.5,
+   "paint": {
+    "line-color": "#2C3D55",
+    "line-width": 0.8,
+    "line-dasharray": [
+     3,
+     2
+    ]
+   }
+  },
+  {
+   "id": "country-borders",
+   "type": "line",
+   "source": "borders",
+   "paint": {
+    "line-color": "#5A6F8E",
+    "line-width": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     2,
+     0.8,
+     8,
+     1.6
+    ]
+   }
+  },
+  {
+   "id": "coast",
+   "type": "line",
+   "source": "countries",
+   "paint": {
+    "line-color": "#26405F",
+    "line-width": 0.7
+   }
+  },
+  {
+   "id": "marine-labels",
+   "type": "symbol",
+   "source": "marine",
+   "filter": [
+    "<=",
+    [
+     "get",
+     "scalerank"
+    ],
+    [
+     "step",
+     [
+      "zoom"
+     ],
+     1,
+     3,
+     3,
+     5,
+     6
+    ]
+   ],
+   "layout": {
+    "text-field": [
+     "get",
+     "name"
+    ],
+    "text-font": [
+     "NotoSansItalic"
+    ],
+    "text-size": 12,
+    "text-letter-spacing": 0.15,
+    "text-max-width": 8,
+    "symbol-placement": "point"
+   },
+   "paint": {
+    "text-color": "#3F6E99"
+   }
+  },
+  {
+   "id": "region-labels",
+   "type": "symbol",
+   "source": "regions",
+   "minzoom": 3,
+   "filter": [
+    "in",
+    [
+     "get",
+     "featurecla"
+    ],
+    [
+     "literal",
+     [
+      "Desert",
+      "Range/mtn",
+      "Plateau",
+      "Plain",
+      "Valley",
+      "Delta",
+      "Wetlands",
+      "Peninsula",
+      "Pen/cape",
+      "Coast"
+     ]
+    ]
+   ],
+   "layout": {
+    "text-field": [
+     "upcase",
+     [
+      "get",
+      "name"
+     ]
+    ],
+    "text-font": [
+     "NotoSansItalic"
+    ],
+    "text-size": 11,
+    "text-letter-spacing": 0.25,
+    "text-max-width": 10
+   },
+   "paint": {
+    "text-color": "#7A6F55",
+    "text-opacity": 0.6
+   }
+  },
+  {
+   "id": "state-labels",
+   "type": "symbol",
+   "source": "states",
+   "minzoom": 6.5,
+   "layout": {
+    "text-field": [
+     "get",
+     "name"
+    ],
+    "text-font": [
+     "NotoSansRegular"
+    ],
+    "text-size": 11,
+    "text-letter-spacing": 0.08
+   },
+   "paint": {
+    "text-color": "#4D6585"
+   }
+  },
+  {
+   "id": "place-dots",
+   "type": "circle",
+   "source": "places",
+   "filter": [
+    ">=",
+    [
+     "get",
+     "i"
+    ],
+    [
+     "step",
+     [
+      "zoom"
+     ],
+     78,
+     4.5,
+     66,
+     6,
+     55,
+     7.5,
+     45,
+     9,
+     30
+    ]
+   ],
+   "paint": {
+    "circle-radius": [
+     "match",
+     [
+      "get",
+      "k"
+     ],
+     "capital",
+     3.5,
+     "peak",
+     3,
+     2.5
+    ],
+    "circle-color": [
+     "match",
+     [
+      "get",
+      "k"
+     ],
+     "peak",
+     "#C9B58A",
+     "volcano",
+     "#E07A5F",
+     "lake",
+     "#4C8FC9",
+     "#D7DEE8"
+    ],
+    "circle-stroke-color": "#0A1424",
+    "circle-stroke-width": 1
+   }
+  },
+  {
+   "id": "place-labels",
+   "type": "symbol",
+   "source": "places",
+   "filter": [
+    ">=",
+    [
+     "get",
+     "i"
+    ],
+    [
+     "step",
+     [
+      "zoom"
+     ],
+     78,
+     4.5,
+     66,
+     6,
+     55,
+     7.5,
+     45,
+     9,
+     30
+    ]
+   ],
+   "layout": {
+    "text-field": [
+     "get",
+     "n"
+    ],
+    "text-font": [
+     "NotoSansMedium"
+    ],
+    "text-size": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "get",
+      "i"
+     ],
+     30,
+     11,
+     90,
+     13
+    ],
+    "text-offset": [
+     0,
+     0.9
+    ],
+    "text-anchor": "top",
+    "text-max-width": 9,
+    "symbol-sort-key": [
+     "-",
+     100,
+     [
+      "get",
+      "i"
+     ]
+    ]
+   },
+   "paint": {
+    "text-color": [
+     "match",
+     [
+      "get",
+      "k"
+     ],
+     "peak",
+     "#D9C79E",
+     "lake",
+     "#7FB4E2",
+     "#D7DEE8"
+    ],
+    "text-halo-color": "#0A1424",
+    "text-halo-width": 1.4
+   }
+  }
+ ]
 }
