@@ -2,11 +2,11 @@
  "schema": 1,
  "pack": "base-world",
  "version": "2026.10.28",
- "built": "2026-10-28T09:08:53Z",
+ "built": "2026-10-28T09:46:50Z",
  "softTTLDays": 60,
  "hardTTLDays": 365,
  "counts": {
-  "pois": 9000,
+  "pois": 9010,
   "airports": 3245
  },
  "sources": [
@@ -57,8 +57,8 @@
   },
   {
    "path": "geo/places.geojson",
-   "sha256": "e342513c5fc014e171e7d68e0f275f71719b8be8bfbfcaa2910a8d3a393b3837",
-   "size": 1325205
+   "sha256": "681d19f4b18a16a30a46532231bd6c1dd199530dbcf8bfcf6dbdbad78928a435",
+   "size": 1326835
   },
   {
    "path": "geo/regions.geojson",
@@ -172,8 +172,8 @@
   },
   {
    "path": "pois.json",
-   "sha256": "158b95d66e1231a0a6076217d923862dbe97c8e464d8435ecfcc4b3512163dec",
-   "size": 1919399
+   "sha256": "a357523d0c7754919c10f8af45bb81ac8c283de5d9d7c01ac0cf98d96b23dafd",
+   "size": 1921560
   },
   {
    "path": "style.json",
