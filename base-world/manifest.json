@@ -1,12 +1,12 @@
 {
  "schema": 1,
  "pack": "base-world",
- "version": "2026.10.28.2",
- "built": "2026-10-28T10:54:42Z",
+ "version": "2026.11.23.2",
+ "built": "2026-11-23T09:47:42Z",
  "softTTLDays": 60,
  "hardTTLDays": 365,
  "counts": {
-  "pois": 9010,
+  "pois": 11491,
   "airports": 3245
  },
  "sources": [
@@ -57,8 +57,8 @@
   },
   {
    "path": "geo/places.geojson",
-   "sha256": "681d19f4b18a16a30a46532231bd6c1dd199530dbcf8bfcf6dbdbad78928a435",
-   "size": 1326835
+   "sha256": "5e61b973f9a4a040ed4e9124492a514ed3d9769c42aaf4e5788631644857c4dd",
+   "size": 1328028
   },
   {
    "path": "geo/regions.geojson",
@@ -69,6 +69,11 @@
    "path": "geo/rivers.geojson",
    "sha256": "64c7432e59dad2c74783b9c6858dd86d7cc508ff9629e97cef929fe68d11c471",
    "size": 1293188
+  },
+  {
+   "path": "geo/roads.geojson",
+   "sha256": "5f118281cce85a4086f62205bffe0de2513f3333863478a5256d809b26ba6c27",
+   "size": 3655150
   },
   {
    "path": "geo/states.geojson",
@@ -172,13 +177,13 @@
   },
   {
    "path": "pois.json",
-   "sha256": "a357523d0c7754919c10f8af45bb81ac8c283de5d9d7c01ac0cf98d96b23dafd",
-   "size": 1921560
+   "sha256": "8eb532c2dcd1ac8fe1b0b6f25041739871ec3071e702134df8d51ef6d052ba24",
+   "size": 2593540
   },
   {
    "path": "style.json",
-   "sha256": "0de6b2c4020f99d8dd2c8047e9e382dd56859b6a5478d0b1d70b9229a38a34a6",
-   "size": 6243
+   "sha256": "1e0751e10e7c3627a9b0ab45427ae6e74e0cd03ae92adb17696c48110680097e",
+   "size": 7266
   }
  ]
 }

@@ -30,6 +30,11 @@
    "type": "geojson",
    "data": "{{BASE}}/geo/rivers.geojson"
   },
+  "roads": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/roads.geojson",
+   "tolerance": 0.6
+  },
   "marine": {
    "type": "geojson",
    "data": "{{BASE}}/geo/marine.geojson"
@@ -41,6 +46,20 @@
   "places": {
    "type": "geojson",
    "data": "{{BASE}}/geo/places.geojson"
+  },
+  "terrain": {
+   "type": "raster-dem",
+   "tiles": [
+    "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+   ],
+   "encoding": "terrarium",
+   "tileSize": 256,
+   "maxzoom": 10,
+   "attribution": "Terrain: Mapzen Terrain Tiles on AWS Open Data (SRTM, ETOPO1 and others)"
+  },
+  "airfields": {
+   "type": "geojson",
+   "data": "{{BASE}}/geo/airfields.geojson"
   }
  },
  "layers": [
@@ -58,6 +77,19 @@
    "paint": {
     "fill-color": "#141E2C",
     "fill-antialias": true
+   }
+  },
+  {
+   "id": "terrain-shade",
+   "type": "hillshade",
+   "source": "terrain",
+   "maxzoom": 14,
+   "paint": {
+    "hillshade-exaggeration": 0.6,
+    "hillshade-shadow-color": "#020407",
+    "hillshade-highlight-color": "#4A6080",
+    "hillshade-accent-color": "#0B111A",
+    "hillshade-illumination-direction": 315
    }
   },
   {
@@ -101,7 +133,7 @@
    "source": "urban",
    "minzoom": 4,
    "paint": {
-    "fill-color": "#5A4520",
+    "fill-color": "#26324A",
     "fill-opacity": [
      "interpolate",
      [
@@ -161,6 +193,87 @@
      0.6,
      8,
      1.8
+    ]
+   }
+  },
+  {
+   "id": "roads",
+   "type": "line",
+   "source": "roads",
+   "minzoom": 4,
+   "filter": [
+    "<=",
+    [
+     "get",
+     "scalerank"
+    ],
+    [
+     "step",
+     [
+      "zoom"
+     ],
+     5,
+     5.5,
+     7,
+     7,
+     12
+    ]
+   ],
+   "layout": {
+    "line-join": "round",
+    "line-cap": "round"
+   },
+   "paint": {
+    "line-color": "#6A5A3C",
+    "line-opacity": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     4,
+     0.5,
+     7,
+     0.85
+    ],
+    "line-width": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     4,
+     [
+      "case",
+      [
+       "==",
+       [
+        "get",
+        "expressway"
+       ],
+       1
+      ],
+      0.9,
+      0.5
+     ],
+     9,
+     [
+      "case",
+      [
+       "==",
+       [
+        "get",
+        "expressway"
+       ],
+       1
+      ],
+      2.2,
+      1.4
+     ]
     ]
    }
   },
@@ -331,13 +444,13 @@
      ],
      78,
      4.5,
-     66,
+     50,
      6,
-     55,
+     40,
      7.5,
-     45,
+     32,
      9,
-     30
+     25
     ]
    ],
    "paint": {
@@ -372,6 +485,151 @@
    }
   },
   {
+   "id": "airfields-strips",
+   "type": "circle",
+   "source": "airfields",
+   "minzoom": 8,
+   "filter": [
+    "==",
+    [
+     "get",
+     "k"
+    ],
+    "S"
+   ],
+   "paint": {
+    "circle-radius": 2.5,
+    "circle-color": "rgba(0,0,0,0)",
+    "circle-stroke-width": 1.3,
+    "circle-stroke-color": "#8FB8DE"
+   }
+  },
+  {
+   "id": "airfields-major",
+   "type": "circle",
+   "source": "airfields",
+   "minzoom": 4.5,
+   "filter": [
+    "!=",
+    [
+     "get",
+     "k"
+    ],
+    "S"
+   ],
+   "paint": {
+    "circle-radius": [
+     "case",
+     [
+      "==",
+      [
+       "get",
+       "k"
+      ],
+      "L"
+     ],
+     3.5,
+     2.8
+    ],
+    "circle-color": "#8FB8DE",
+    "circle-stroke-width": 1,
+    "circle-stroke-color": "#0A1424"
+   }
+  },
+  {
+   "id": "airfields-labels",
+   "type": "symbol",
+   "source": "airfields",
+   "minzoom": 6,
+   "filter": [
+    "!=",
+    [
+     "get",
+     "k"
+    ],
+    "S"
+   ],
+   "layout": {
+    "text-field": [
+     "step",
+     [
+      "zoom"
+     ],
+     [
+      "get",
+      "c"
+     ],
+     9,
+     [
+      "concat",
+      [
+       "get",
+       "c"
+      ],
+      " ",
+      [
+       "coalesce",
+       [
+        "get",
+        "n"
+       ],
+       ""
+      ]
+     ]
+    ],
+    "text-font": [
+     "NotoSansMedium"
+    ],
+    "text-size": 10,
+    "text-offset": [
+     0,
+     0.9
+    ],
+    "text-anchor": "top",
+    "text-optional": true
+   },
+   "paint": {
+    "text-color": "#8FB8DE",
+    "text-halo-color": "#0A1424",
+    "text-halo-width": 1.2
+   }
+  },
+  {
+   "id": "airfields-strip-labels",
+   "type": "symbol",
+   "source": "airfields",
+   "minzoom": 10,
+   "filter": [
+    "==",
+    [
+     "get",
+     "k"
+    ],
+    "S"
+   ],
+   "layout": {
+    "text-field": [
+     "get",
+     "c"
+    ],
+    "text-font": [
+     "NotoSansRegular"
+    ],
+    "text-size": 9,
+    "text-offset": [
+     0,
+     0.8
+    ],
+    "text-anchor": "top",
+    "text-optional": true
+   },
+   "paint": {
+    "text-color": "#8FB8DE",
+    "text-halo-color": "#0A1424",
+    "text-halo-width": 1
+   }
+  },
+  {
    "id": "place-labels",
    "type": "symbol",
    "source": "places",
@@ -388,13 +646,13 @@
      ],
      78,
      4.5,
-     66,
+     50,
      6,
-     55,
+     40,
      7.5,
-     45,
+     32,
      9,
-     30
+     25
     ]
    ],
    "layout": {
