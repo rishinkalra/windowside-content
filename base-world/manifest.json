@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "pack": "base-world",
- "version": "2026.11.23.2",
- "built": "2026-11-23T09:47:42Z",
+ "version": "2026.11.23.3",
+ "built": "2026-11-23T10:52:08Z",
  "softTTLDays": 60,
  "hardTTLDays": 365,
  "counts": {
@@ -177,8 +177,8 @@
   },
   {
    "path": "pois.json",
-   "sha256": "8eb532c2dcd1ac8fe1b0b6f25041739871ec3071e702134df8d51ef6d052ba24",
-   "size": 2593540
+   "sha256": "55e188b96ecc8f6b2601db42d4d5057bda70304277497c3159d126fd01d7fc7d",
+   "size": 2633052
   },
   {
    "path": "style.json",
